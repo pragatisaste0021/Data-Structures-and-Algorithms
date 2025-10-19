@@ -1,0 +1,41 @@
+class Solution {
+    public Node copyRandomList(Node head) {
+        
+        Node temp = head;
+
+        HashMap<Node, Node> map = new HashMap<>();
+
+        while(temp != null){
+            Node newNode = new Node(temp.val);
+            map.put(temp, newNode);
+            // if(temp.random != null){
+            //     if(!map.containsKey(temp.random)){
+            //         Node tempNode = new Node(temp.random.val);
+            //         map.put(temp.random, tempNode);
+            //     }
+            // }
+            temp = temp.next;
+        }
+
+        // for(Map.Entry<Node, Node> entry : map.entrySet()){
+
+        //     System.out.println(entry.getKey().val + " " + entry.getValue().val + " " + entry.getValue().next + " " + entry.getValue().random);
+        // }
+
+        temp = head;
+
+        Node newHead = map.get(temp);
+
+        // System.out.println(newHead.random);
+
+        Node newTemp = newHead;
+
+        while(temp != null){
+            newTemp.next = map.get(temp.next);
+            newTemp.random = map.get(temp.random);
+            temp = temp.next;
+            newTemp = newTemp.next;
+        }
+        return newHead;
+    }
+}
