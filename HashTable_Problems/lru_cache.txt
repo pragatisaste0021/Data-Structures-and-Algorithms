@@ -1,0 +1,94 @@
+class Node{
+
+    int key;
+    int value;
+    Node prev;
+    Node next;
+
+    public Node(int key, int value){
+        this.key = key;
+        this.value = value;
+        prev = null;
+        next = null;
+    }
+}
+
+class LRUCache {
+
+    HashMap<Integer, Node> map = new HashMap<>();
+
+    Node head;
+    Node tail;
+
+    int capacity;
+
+    List<Integer> list = new ArrayList<>();
+
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        this.head = new Node(-1, -1);
+        this.tail = new Node(-1, -1);
+        head.next = tail;
+        tail.prev = head;
+    }
+    
+    public int get(int key) {
+        // System.out.println(list);
+        if(map.containsKey(key)){
+           Node curr = map.get(key);
+           int ans = curr.value;
+           deleteNode(curr);
+           insertAfterHead(curr);
+           return ans;
+        }
+        return -1;
+    }
+    
+    public void put(int key, int value) {  
+        if(map.containsKey(key)){
+            Node curr = map.get(key);
+            curr.value = value;
+            deleteNode(curr);
+            insertAfterHead(curr);  
+        }
+        else{
+            if(capacity == map.size()){
+                Node nodeToBeDeleted = tail.prev;
+                int delKey = nodeToBeDeleted.key;
+                map.remove(delKey);
+                deleteNode(nodeToBeDeleted);
+            }
+            Node node = new Node(key, value);
+            insertAfterHead(node);
+            map.put(key, node);
+        }
+    }
+
+    public void insertAfterHead(Node node){
+
+        Node next = head.next;
+
+        head.next = node;
+
+        node.prev = head;
+
+        node.next = next;
+
+        next.prev = node;
+    }
+
+    public void deleteNode(Node node){
+
+        Node prev = node.prev;
+        Node next = node.next;
+        prev.next = next;
+        next.prev = prev;
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
