@@ -1,0 +1,42 @@
+class RandomizedSet {
+
+    List<Integer> list;
+
+    public RandomizedSet() {
+        list = new ArrayList<>();
+    }
+    
+    public boolean insert(int val) {
+
+        if(list.contains(val)){
+            return false;
+        }
+        else{
+            // System.out.println(list);
+            // System.out.println(val);
+            list.add(val);
+            
+            // System.out.println(list);
+            return true;
+        }
+    }
+    
+    public boolean remove(int val) {
+        if(!list.contains(val)){
+            return false;
+        }
+        else{
+            list.remove(Integer.valueOf(val));
+            return true;
+        }
+    }
+    
+    public int getRandom() {
+        
+        Random random = new Random();
+
+        int randomIndex = random.nextInt(list.size());
+
+        return list.get(randomIndex);
+    }
+}
