@@ -1,0 +1,32 @@
+class Solution {
+    public String frequencySort(String s) {
+        
+        int n = s.length();
+
+        PriorityQueue<Pair<Character, Integer>> pq = new PriorityQueue<>((a, b) -> Integer.compare(b.getValue(), a.getValue()));
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+        }
+
+        for(Map.Entry<Character, Integer> entry : map.entrySet()){
+            pq.add(new Pair<Character, Integer> (entry.getKey(), entry.getValue()));
+        }
+
+        StringBuilder str = new StringBuilder();
+
+        while(!pq.isEmpty()){
+            Pair<Character, Integer> pair = pq.poll();
+
+            int val = pair.getValue();
+
+            while(val != 0){
+                str.append(pair.getKey());
+                val--;
+            }
+        }
+        return str.toString();
+    }
+}
