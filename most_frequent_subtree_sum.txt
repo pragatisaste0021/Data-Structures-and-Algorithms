@@ -1,0 +1,79 @@
+class Solution {
+
+    TreeMap<Integer, Integer> freqMap = new TreeMap<>();
+
+    public int[] findFrequentTreeSum(TreeNode root) {
+
+        findSum(root);
+
+        Map<Integer, Integer> sortedMap = freqMap.entrySet()
+            .stream()
+            .sorted(Map.Entry.comparingByValue())  // Sort by values
+            .collect(Collectors.toMap(
+                Map.Entry::getKey, 
+                Map.Entry::getValue, 
+                (e1, e2) -> e1, 
+                LinkedHashMap::new  
+            ));
+
+        // freqMap = new TreeMap<>(Comparator.comparingInt(sortedMap::get));   
+
+        freqMap.putAll(sortedMap);
+
+
+        // for(Map.Entry<Integer, Integer> entry : newFreqMap.entrySet()){
+        //     System.out.println(entry.getKey() + " " + entry.getValue());
+        // }
+
+        System.out.println(sortedMap);
+
+        System.out.println(freqMap);
+
+        System.out.println(freqMap.size());
+
+        List<Integer> list = new ArrayList<>();
+
+        Map.Entry<Integer, Integer> lastEntry = ((LinkedHashMap<Integer, Integer>) sortedMap)
+                    .entrySet().stream()
+                    .reduce((first, second) -> second) 
+                    .get();
+
+        int maxFreq = lastEntry.getValue();
+
+        list.add(lastEntry.getKey());
+
+        sortedMap.remove(lastEntry.getKey());
+
+        while(!sortedMap.isEmpty()){
+
+            lastEntry = ((LinkedHashMap<Integer, Integer>) sortedMap)
+                    .entrySet().stream()
+                    .reduce((first, second) -> second)  
+                    .get();
+
+            if(maxFreq != lastEntry.getValue()){
+                break;
+            }
+            list.add(lastEntry.getKey());
+
+            sortedMap.remove(lastEntry.getKey());
+        }
+
+        Integer[] ans = list.toArray(new Integer[0]);
+
+        int[] result = Arrays.stream(ans)
+                               .mapToInt(Integer::intValue)
+                               .toArray();
+
+        return result;
+    }
+
+    public int findSum(TreeNode root){
+        if(root == null){
+           return 0;
+        }
+        int sum = findSum(root.left) + findSum(root.right) + root.val;
+        freqMap.put(sum, freqMap.getOrDefault(sum, 0) + 1);
+        return sum;
+    }
+}
