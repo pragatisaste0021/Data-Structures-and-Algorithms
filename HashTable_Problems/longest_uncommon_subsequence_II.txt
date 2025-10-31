@@ -1,0 +1,48 @@
+class Solution {
+    public int findLUSlength(String[] strs) {
+        
+        int longestSubsequence = 0;
+
+        int n = strs.length;
+
+        for(int i=0; i<n; i++){
+            boolean flag = false;
+            for(int j=0; j<n; j++){
+                if(i != j){
+                    if(isSubsequence(strs[i], strs[j])){
+                        flag = true;
+                        break;
+                    }
+                }
+            }
+            if(flag == false){
+                longestSubsequence = Math.max(longestSubsequence, strs[i].length());
+            }
+        }
+        return longestSubsequence == 0 ? -1 : longestSubsequence;
+    }
+
+    public static boolean isSubsequence(String str1, String str2){
+
+        if(str1.length() > str2.length()){
+            return false;
+        }
+
+        int i=0, j=0;
+
+        while(i<str1.length() && j<str2.length()){
+            if(str1.charAt(i) == str2.charAt(j)){
+                i++;
+                j++;
+            }
+            else{
+                j++;
+            }
+        }
+
+        if(i == str1.length()){
+            return true;
+        }
+        return false;
+    }
+}
