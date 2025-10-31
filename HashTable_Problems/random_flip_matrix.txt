@@ -1,0 +1,40 @@
+class Solution {
+
+    HashSet<int[]> set = new HashSet<>();
+    int m,n;
+
+    public Solution(int m, int n) {
+        this.m = m;
+        this.n = n;
+    }
+    
+    public int[] flip() {
+        Random random = new Random();
+
+        while(true){
+            int rowIndex = random.nextInt((m-1) + 1);
+            int colIndex = random.nextInt((n-1) + 1);
+
+            boolean flag = false;
+
+            // System.out.println(rowIndex + " " + colIndex);
+
+             for(int[] val : set){
+                if(Arrays.equals(val, new int[] {rowIndex, colIndex})){
+                    flag = true;
+                }
+            }
+
+            if(!flag){
+                set.add(new int[]{rowIndex, colIndex});
+                return new int[]{rowIndex, colIndex};
+            }
+        }
+        
+    }
+    
+    public void reset() {
+        
+        set.clear();
+    }
+}
