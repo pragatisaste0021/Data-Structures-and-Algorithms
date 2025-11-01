@@ -1,0 +1,28 @@
+Problem Name: Encode and Decode TinyURL
+
+Solution Code: 
+
+import java.util.*;
+
+public class Codec {
+
+    HashMap<String, String> map = new HashMap<>();
+
+    // Encodes a URL to a shortened URL.
+    public String encode(String longUrl) {
+        
+        UUID uniqueId = UUID.randomUUID();
+
+        map.put(uniqueId.toString(), longUrl);
+
+        return "http://tinyurl.com/" + uniqueId.toString();
+    }
+
+    // Decodes a shortened URL to its original URL.
+    public String decode(String shortUrl) {
+        
+        String uniqueId = shortUrl.substring(19);
+
+        return map.get(uniqueId);
+    }
+}
