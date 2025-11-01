@@ -1,0 +1,40 @@
+Problem Name: K-diff Pairs in an Array
+
+Solution Code: 
+
+class Solution {
+
+    public int findPairs(int[] nums, int k) {
+
+        int n = nums.length;
+
+        HashSet<Integer> set = new HashSet<>();
+
+        HashSet<List<Integer>> set1 = new HashSet<>();
+
+        set.add(nums[0]);
+
+        for(int i=1; i<n; i++){
+            if(set.contains(nums[i] - k)){
+                int min = Math.min(nums[i], nums[i]-k);
+                int max = Math.max(nums[i], nums[i]-k);
+                List<Integer> list = new ArrayList<>(Arrays.asList(min, max));
+                if(!set1.contains(list)){
+                    set1.add(list);
+                }
+            }
+
+            if(set.contains(nums[i] + k)){
+                int min = Math.min(nums[i], nums[i]+k);
+                int max = Math.max(nums[i], nums[i]+k);
+                List<Integer> list = new ArrayList<>(Arrays.asList(min, max));
+                if(!set1.contains(list)){
+                    set1.add(list);
+                }
+            }
+            set.add(nums[i]);
+        } 
+   
+        return set1.size();
+    }
+}
