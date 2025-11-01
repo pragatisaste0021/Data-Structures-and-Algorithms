@@ -1,0 +1,37 @@
+Problem Name: Continuous Subarray Sum
+
+Solution Code:
+
+class Solution {
+    public boolean checkSubarraySum(int[] nums, int k) {
+
+        int n = nums.length;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int sum = nums[0];
+
+        map.put(nums[0]%k, 0);
+        
+        for(int i=1; i<n; i++){
+            sum += nums[i];
+            int rem = sum % k;;
+            if(rem == 0){
+                return true;
+            }
+            if(i < n-1 && nums[i] == 0 && nums[i+1] == 0){
+                return true;
+            }
+            // int reqRem = k-rem;
+            if(map.containsKey(rem)){
+                if(i - map.get(rem) >= 2){
+                    return true; 
+                }
+            }
+            else{
+                map.put(rem, i);
+            }
+        }
+
+        return false;
+    }
+}
