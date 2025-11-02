@@ -1,0 +1,51 @@
+Problem Name: Replace Words
+
+Solution Code: class Solution {
+    public String replaceWords(List<String> dictionary, String sentence) {
+        
+        int n = dictionary.size();
+
+        int m = sentence.length();
+
+        HashSet<String> set = new HashSet<>();
+
+        for(String word : dictionary){
+            set.add(word);
+        }
+
+       int i=0, j=0;
+
+       StringBuilder str = new StringBuilder();
+
+       boolean flag = false;
+
+       while(j < m){
+
+        if(flag == false && set.contains(sentence.substring(i, j+1))){
+            str.append(sentence.substring(i, j+1) + " ");
+            flag = true;
+        }
+
+        if(sentence.charAt(j) == ' '){
+            if(flag == false){
+                str.append((sentence.substring(i, j)) + " ");
+            }
+            else{
+                flag = false;
+            }
+            i = j+1;
+        }
+
+        j++;
+
+       }
+
+       if(flag == false){
+        str.append(sentence.substring(i, j) + " ");
+       }
+
+        str.deleteCharAt(str.length()-1);
+
+        return str.toString();
+    }
+}
