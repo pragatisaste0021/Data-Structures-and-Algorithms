@@ -1,0 +1,60 @@
+Problem Name: Task Scheduler
+
+Solution Code:  
+
+class Solution {
+    public int leastInterval(char[] tasks, int n) {
+        
+        int m = tasks.length;
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(b[1], a[1]));
+
+        for(int i=0; i<m; i++){
+            map.put(tasks[i], map.getOrDefault(tasks[i], 0) + 1);
+        }
+
+        for(Map.Entry<Character, Integer> entry : map.entrySet()){
+            pq.add(new int[] {entry.getKey() - 'A', entry.getValue()});
+        }
+
+        int count = 0 ;
+
+        while(!map.isEmpty()){
+            int[] arr = pq.poll();
+
+            int val = n;
+
+            while(val != 0 && !pq.isEmpty()){
+                int[] a = pq.poll();
+                char c = (char)(a[0] + 'A');
+
+                map.put(c, map.getOrDefault(c, 0) - 1);
+                if(map.get(c) <= 0){
+                    map.remove(c);
+                }
+                val--;
+            }
+
+            if(val != 0 && map.get((char)(arr[0] + 'A')) > 1){
+                count += val;
+            }
+
+            char c = (char)(arr[0] + 'A');
+
+            map.put(c, map.getOrDefault(c, 0) - 1);
+
+            if(map.get(c) <= 0){
+                map.remove(c);
+            }
+
+            pq.clear();
+
+            for(Map.Entry<Character, Integer> entry : map.entrySet()){
+                pq.add(new int[] {(char)(entry.getKey() - 'A'), entry.getValue()});
+            }
+        }
+        return count + m;
+    }
+}
