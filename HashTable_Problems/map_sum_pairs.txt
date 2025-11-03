@@ -1,0 +1,31 @@
+Problem Name: Map Sum Pairs
+
+Solution Code:  
+
+class MapSum {
+
+    HashMap<String, Integer> map = new HashMap<>();
+
+    public MapSum() {
+        
+    }
+    
+    public void insert(String key, int val) {
+        map.put(key, val);
+    }
+    
+    public int sum(String prefix) {
+
+        int sum = 0;
+        
+        for(Map.Entry<String, Integer> entry : map.entrySet()){
+            if(entry.getKey().length() < prefix.length()){
+                continue;
+            }
+            if(entry.getKey().substring(0, prefix.length()).equals(prefix)){     
+                sum += entry.getValue();
+            }
+        }
+        return sum;
+    }
+}
