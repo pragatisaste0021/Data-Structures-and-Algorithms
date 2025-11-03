@@ -1,0 +1,75 @@
+Problem Name: Longest Word in Dictionary
+
+Solution Code:
+
+class Solution {
+    public String longestWord(String[] words) {
+        
+        int n = words.length;
+
+        HashMap<Integer, List<String>> map = new HashMap<>();
+
+        int minLength = Integer.MAX_VALUE;
+
+        int maxLength = 0;
+
+        for(int i=0; i<n; i++){
+            map.putIfAbsent(words[i].length(), new ArrayList<>());
+            map.get(words[i].length()).add(words[i]);
+            maxLength = Math.max(maxLength, words[i].length());
+        }
+
+        List<String> prev = map.getOrDefault(1, new ArrayList<>());
+
+        String longestString = "";
+
+        if(prev.isEmpty()){
+            return "";
+        }
+
+        for(String val : prev){
+            if(!longestString.equals("")){
+                if(longestString.compareTo(val) > 0){
+                    longestString = val;
+                }
+            }
+            else{
+                longestString = val;
+            }
+        }
+
+        for(int i=2; i<=maxLength; i++){
+
+            List<String> curr = map.getOrDefault(i, new ArrayList<>());
+
+            String str = "";
+
+            List<String> newList = new ArrayList<>();
+
+            for(String val : curr){
+                if(prev.contains(val.substring(0, val.length()-1))){
+                    if(!str.equals("")){
+                        if(str.compareTo(val) > 0){
+                            str = val;
+                        }
+                    }
+                    else{
+                        str = val;
+                    }
+                    newList.add(val);
+                }
+                else{
+                    
+                }
+            }
+
+            if(!str.equals("")){
+                longestString = str;
+            }
+
+            prev = newList;
+            
+        }
+        return longestString;
+    }
+}
