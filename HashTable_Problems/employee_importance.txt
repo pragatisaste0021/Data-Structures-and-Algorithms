@@ -1,0 +1,36 @@
+Problem Name: Employee Importance
+
+Solution Code:
+
+class Solution {
+    public int getImportance(List<Employee> employees, int id) {
+        
+        HashMap<Integer, List<Integer>> map1 = new HashMap<>();
+
+        HashMap<Integer, Integer> map2 = new HashMap<>();
+
+        for(Employee employee : employees){
+            map1.put(employee.id, employee.subordinates);
+            map2.put(employee.id, employee.importance);
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        queue.add(id);
+
+        int totalValue = 0;
+
+        while(!queue.isEmpty()){
+            int eid = queue.poll();
+
+            if(map1.getOrDefault(eid, new ArrayList<Integer>()).size() > 0){
+                List<Integer> l = map1.get(eid);
+                for(int val : l){
+                    queue.add(val);
+                }
+            }
+            totalValue += map2.get(eid);
+        }
+        return totalValue;
+    }
+}
