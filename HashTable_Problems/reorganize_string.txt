@@ -1,0 +1,50 @@
+Problem Name: Reorganize String
+
+Solution Code:
+
+class Solution {
+    public String reorganizeString(String s) {
+        
+        int n = s.length();
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a1, a2) -> Integer.compare(a2[1], a1[1]));
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.put(s.charAt(i) - 'a', map.getOrDefault(s.charAt(i) - 'a', 0) + 1);
+        }
+
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+            pq.add(new int[] {entry.getKey(), entry.getValue()});
+        }
+
+        StringBuilder str = new StringBuilder();
+
+        while(!pq.isEmpty()){
+            int[] arr = pq.poll();
+           
+            if((str.isEmpty() || (char)(arr[0] + 'a') != str.charAt(str.length()-1))){
+                str.append((char)(arr[0] + 'a'));
+                if(arr[1] > 1){
+                    arr[1]--;
+                    pq.add(arr);
+                }
+            }
+            else{
+                if(pq.isEmpty()){
+                    return "";
+                }
+                int[] a = pq.poll();
+                System.out.println((char)(arr[0] + 'a'));
+                str.append((char)(a[0] + 'a'));
+                if(a[1] > 1){
+                    a[1]--;
+                    pq.add(a);
+                }     
+                pq.add(arr);
+            }
+        }
+        return str.toString();
+    }
+}
