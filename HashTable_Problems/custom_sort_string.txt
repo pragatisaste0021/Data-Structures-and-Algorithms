@@ -1,0 +1,38 @@
+Problem Name: Custom Sort String
+
+Solution Code:
+
+class Solution {
+    public String customSortString(String order, String s) {
+        
+        int n = s.length();
+
+        int m = order.length();
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        StringBuilder str = new StringBuilder();
+
+        for(int i=0; i<n; i++){
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+        }
+
+        for(int i=0; i<m; i++){
+            if(map.containsKey(order.charAt(i))){
+                int count = map.get(order.charAt(i));
+                for(int j=0; j<count; j++){
+                    str.append(order.charAt(i));
+                }
+                map.put(order.charAt(i), 0);  
+            }
+        }
+
+        for(Map.Entry<Character, Integer> entry : map.entrySet()){
+            int count = entry.getValue();
+            for(int i=0; i<count; i++){
+                str.append(entry.getKey());
+            }
+        }
+        return str.toString();
+    }
+}
