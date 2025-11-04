@@ -1,0 +1,36 @@
+Problem Name: Rabbits in Forest
+
+Solution Code:
+
+class Solution {
+    public int numRabbits(int[] answers) {
+        
+        int n = answers.length;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        int total = 0;
+
+        for(int i=0; i<n; i++){
+            map.put(answers[i], map.getOrDefault(answers[i], 0) + 1);
+            total += 1;
+        }
+
+        System.out.println(total);
+
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+            
+            if(entry.getKey() == 0){
+                continue;
+            }
+            if(entry.getValue() % (entry.getKey() + 1) == 0){
+                total += 0;
+            }
+            else{
+                total += ((entry.getKey() + 1) - (entry.getValue() % (entry.getKey() + 1)));
+            }
+        }
+
+        return total;
+    }
+}
