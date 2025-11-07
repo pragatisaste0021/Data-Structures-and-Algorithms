@@ -1,0 +1,43 @@
+Problem Name: Card Flipping Game
+
+Solution Code:
+
+class Solution {
+    public int flipgame(int[] fronts, int[] backs) {
+        
+        int n = fronts.length;
+
+        HashMap<Integer, Integer> front = new HashMap<>();
+        HashMap<Integer, Integer> back = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            front.put(fronts[i], front.getOrDefault(fronts[i], 0) + 1);
+            back.put(backs[i], back.getOrDefault(backs[i], 0) + 1);
+        }
+
+        int minNum = Integer.MAX_VALUE;
+
+        for(int i=0; i<n; i++){
+            if(front.getOrDefault(fronts[i], 0) <= n - back.getOrDefault(fronts[i], 0)){
+                boolean flag = true;
+                for(int j=0; j<n; j++){
+                    if(fronts[i] == fronts[j]){
+                       if(fronts[j] == backs[j]){
+                            flag = false;
+                       } 
+                    }
+                }
+                if(flag == true){
+                    minNum = Math.min(minNum, fronts[i]);
+                }
+            }
+        }
+
+        for(Map.Entry<Integer, Integer> entry : back.entrySet()){
+            if(!front.containsKey(entry.getKey())){
+                minNum = Math.min(minNum, entry.getKey());
+            }
+        }
+        return minNum == Integer.MAX_VALUE ? 0 : minNum;
+    }
+}
