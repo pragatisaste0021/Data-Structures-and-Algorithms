@@ -1,0 +1,38 @@
+Problem Name: Reordered Power of 2
+
+Solution Code:
+
+class Solution {
+    public boolean reorderedPowerOf2(int n) {
+        
+        HashMap<Integer, String> map = new HashMap<>();
+
+        for(int i=0; i<=30; i++){
+            map.put(i, Integer.toString((int)Math.pow(2, i)));
+        }
+
+        StringBuilder str1 = new StringBuilder(Integer.toString(n));
+
+        HashMap<Character, Integer> map1 = new HashMap<>();
+
+        for(int i=0; i<str1.length(); i++){
+            map1.put(str1.charAt(i), map1.getOrDefault(str1.charAt(i), 0) + 1);
+        }
+
+        for(Map.Entry<Integer, String> entry : map.entrySet()){
+            HashMap<Character, Integer> map2 = new HashMap<>();
+
+            int exp = entry.getKey();
+            String power = entry.getValue();
+
+            for(int i=0; i<power.length(); i++){
+                map2.put(power.charAt(i), map2.getOrDefault(power.charAt(i), 0) + 1);
+            }
+
+            if(map1.equals(map2)){
+                return true;
+            }
+        }  
+        return false;
+    }
+}
