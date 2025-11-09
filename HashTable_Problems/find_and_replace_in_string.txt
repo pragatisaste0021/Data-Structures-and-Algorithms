@@ -1,0 +1,54 @@
+Problem Name: Find And Replace in String
+
+Solution Code:
+
+class Solution {
+    public String findReplaceString(String s, int[] indices, String[] sources, String[] targets) {
+        
+        int n = s.length();
+
+        int m = indices.length;
+
+        StringBuilder str = new StringBuilder();
+
+        HashMap<Integer, String[]> map = new HashMap<>();
+
+        for(int i=0; i<m; i++){
+            if(!map.containsKey(indices[i])){
+                map.put(indices[i], new String[] {sources[i], targets[i]});
+            }
+            else{
+                int len = sources[i].length();
+                if(s.substring(indices[i], Math.min(indices[i]+len, s.length())).equals(sources[i])){
+                    map.put(indices[i], new String[] {sources[i], targets[i]});
+                }
+            }
+            
+        }
+
+        Arrays.sort(indices);
+
+        int j = 0;
+
+        for(int i=0; i<n;){
+            if(j < m && indices[j] == i){
+                int len = map.get(indices[j])[0].length();
+                if(s.substring(indices[j], Math.min(indices[j]+len, s.length())).equals(map.get(indices[j])[0])){
+                    str.append(map.get(indices[j])[1]);
+                    
+                    i = i+len;
+                }
+                else{
+                    str.append(s.charAt(i));
+                    i++;
+                }
+                j++;
+            }
+            else{
+                str.append(s.charAt(i));
+                i++;
+            }
+        }
+        return str.toString();
+    }
+}
