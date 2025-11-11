@@ -1,0 +1,41 @@
+Problem Name: Construct Binary Tree from Preorder and Postorder Traversal
+
+Solution Code:
+
+class Solution {
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        
+        int numOfNodes = preorder.length;
+
+        int[] indexPostOrder = new int[numOfNodes+1];
+
+        for(int i=0; i<numOfNodes; i++){
+            indexPostOrder[postorder[i]] = i;
+        }
+
+        return buildTree(0, numOfNodes-1, 0, preorder, indexPostOrder);
+    }
+
+    public static TreeNode buildTree(int preStart, int preEnd, int postStart, int[] preorder, int[] indexPostOrder){
+
+        if(preStart > preEnd){
+            return null;
+        }
+
+        if(preStart == preEnd){
+            return new TreeNode(preorder[preStart]);
+        }
+
+        int leftRoot = preorder[preStart+1];
+
+        int leftSubtreeNodes = indexPostOrder[leftRoot] - postStart + 1;
+
+        TreeNode root = new TreeNode(preorder[preStart]);
+
+        root.left = buildTree(preStart+1, preStart+leftSubtreeNodes, postStart, preorder, indexPostOrder);
+
+        root.right = buildTree(preStart+leftSubtreeNodes+1, preEnd, postStart + leftSubtreeNodes, preorder, indexPostOrder);
+
+        return root;
+    }
+}
