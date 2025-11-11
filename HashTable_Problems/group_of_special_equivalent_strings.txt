@@ -1,0 +1,75 @@
+Problem Name: Groups of Special-Equivalent Strings
+
+Solution Code:
+
+class Solution {
+    public int numSpecialEquivGroups(String[] words) {
+        
+        int n = words.length;
+
+        int ans = 0;
+
+        boolean[] visited = new boolean[n];
+
+        HashMap<Integer, int[]> even = new HashMap<>();
+
+        HashMap<Integer, int[]> odd = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+
+            even.putIfAbsent(i, new int[26]);
+
+            for(int j=0; j<words[i].length(); j++){
+                if(j % 2 == 0){
+                    even.get(i)[words[i].charAt(j) - 'a']++;
+                }
+            }
+        }
+
+        for(int i=0; i<n; i++){
+            odd.putIfAbsent(i, new int[26]);
+            for(int j=0; j<words[i].length(); j++){
+                if(j % 2 != 0){
+                    odd.get(i)[words[i].charAt(j) - 'a']++;
+                }
+            }
+        }
+
+        int i = 0;
+
+        while(i < n){
+
+            if(visited[i]){
+                i++;
+                continue;
+            }
+
+            visited[i] = true;
+
+            for(int k=0; k<n; k++){
+
+                boolean flag = true;
+
+                if(visited[k]){
+                    continue;
+                }
+
+                for(int j=0; j<26; j++){
+                    if(even.get(i)[j] == even.get(k)[j] && odd.get(i)[j] == odd.get(k)[j]){
+
+                    }
+                    else{
+                        flag = false;
+                    }
+                }
+
+                if(flag == true){
+                    visited[k] = true;
+                }
+            }
+            ans++;
+            i++;
+        }
+        return ans;
+    }
+}
