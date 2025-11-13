@@ -1,0 +1,38 @@
+Problem Name: Minimum Area Rectangle
+
+Solution Code:
+
+class Solution {
+    public int minAreaRect(int[][] points) {
+
+        int n = points.length;
+
+        HashSet<List<Integer>> set = new HashSet<>();
+
+        for(int i=0; i<n; i++){
+            set.add(Arrays.asList(points[i][0], points[i][1]));
+        }
+
+        int minArea = Integer.MAX_VALUE;
+
+        for(int i=0; i<n; i++){
+            for(int j=i+1; j<n; j++){
+                if(points[i][0] == points[j][0] || points[i][1] == points[j][1]){
+                // System.out.println("ftdwd");
+                continue;
+                }
+                int[] p1 = new int[]{points[i][0], points[j][1]};
+                int[] p2 = new int[]{points[j][0], points[i][1]};
+                if(!set.contains(Arrays.asList(p1[0], p1[1])) || !set.contains(Arrays.asList(p2[0], p2[1]))){
+                    continue;
+                }
+                else{
+                    int x = Math.abs(points[i][0] - points[j][0]);
+                    int y = Math.abs(points[i][1] - p1[1]);
+                    minArea = Math.min(minArea, x*y);
+                }
+            }
+        }
+        return minArea == Integer.MAX_VALUE ? 0 : minArea;
+    }
+}
