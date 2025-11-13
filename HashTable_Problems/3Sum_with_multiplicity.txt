@@ -1,0 +1,29 @@
+Problem Name: 3Sum With Multiplicity
+
+Solution Code:
+
+class Solution {
+
+    static int MOD = 1000000007;
+    
+    public int threeSumMulti(int[] arr, int target) {
+        
+        int n = arr.length;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        long ans = 0;
+
+        map.put(arr[0]+arr[1], 1);
+
+        for(int i=2; i<n; i++){
+
+            ans = (ans + map.getOrDefault(target - arr[i], 0)) % MOD;
+
+            for(int j=0; j<i; j++){
+                map.put(arr[i]+arr[j], map.getOrDefault(arr[i]+arr[j], 0) + 1);
+            }
+        }
+        return (int) ans;
+    }
+}
