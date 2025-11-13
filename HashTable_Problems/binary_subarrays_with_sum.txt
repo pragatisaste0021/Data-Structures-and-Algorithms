@@ -1,0 +1,23 @@
+Problem Name: Binary Subarrays With Sum
+
+Solution Code:
+
+class Solution {
+    public int numSubarraysWithSum(int[] nums, int goal) {
+        
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        int prefixSum = 0;
+
+        map.put(0, 1);
+
+        int totalCount = 0;
+
+        for(int i=0; i<nums.length; i++){
+            prefixSum += nums[i];
+            totalCount += map.getOrDefault((prefixSum - goal), 0);
+            map.put(prefixSum, map.getOrDefault(prefixSum, 0) + 1);
+        }
+        return totalCount;
+    }
+}
