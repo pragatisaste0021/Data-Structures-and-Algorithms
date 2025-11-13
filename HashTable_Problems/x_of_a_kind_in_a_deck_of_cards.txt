@@ -1,0 +1,70 @@
+Problem Name: X of a Kind in a Deck of Cards
+
+Solution Code:
+
+class Solution {
+    public boolean hasGroupsSizeX(int[] deck) {
+        
+        int n = deck.length;
+
+        Arrays.sort(deck);
+
+        int count = 1;
+
+        int val1 = -1;
+        int val2 = -1;
+
+        List<Integer> list = new ArrayList<>();
+
+        for(int i=1; i<n; i++){
+            if(deck[i] == deck[i-1]){
+                count++;
+            }
+            else{
+                list.add(count);
+                count = 1;
+            }
+        }
+
+        list.add(count);
+
+        if(list.size() == 1){
+            if(list.get(0) <= 1){
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+
+        int gcd = findGCD(list.get(0), list.get(1));
+
+        if(gcd == 1){
+            return false;
+        }
+
+        int g = gcd;
+
+        for(int i=2; i<list.size(); i++){
+            g = findGCD(list.get(i), g);
+            
+            if(g == 1){
+                return false;
+            }
+
+            if(gcd > g){
+                if(gcd % g != 0){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static int findGCD(int a, int b){
+        if (b == 0) {
+            return a;
+        }
+        return findGCD(b, a % b);
+    }
+}
