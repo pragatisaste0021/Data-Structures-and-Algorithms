@@ -1,0 +1,78 @@
+Problem Name: Regions Cut By Slashes
+
+Solution Code:
+
+class Solution {
+
+    static final int[][] directions = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+
+    public int regionsBySlashes(String[] grid) {
+        
+        int n = grid.length;
+
+        int[][] expandedGrid = new int[n*3][n*3];
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<n; j++){
+
+                int row = i * 3;
+                int col = j * 3;
+
+                if(grid[i].charAt(j) == '\\'){
+                    expandedGrid[row][col] = 1;
+                    expandedGrid[row+1][col+1] = 1;
+                    expandedGrid[row+2][col+2] = 1;
+                }
+                else if(grid[i].charAt(j) == '/'){
+                    expandedGrid[row][col+2] = 1;
+                    expandedGrid[row+1][col+1] = 1;
+                    expandedGrid[row+2][col] = 1;
+                }
+            }
+        }
+
+        int regionCount = 0;
+
+        for(int i=0; i<n*3; i++){
+            for(int j=0; j<3*n; j++){
+                if(expandedGrid[i][j] == 0){
+                    regionCount++;
+                    checkRegion(expandedGrid, i, j);
+                }
+            }
+        }
+        return regionCount;
+    }
+
+    public static void checkRegion(int[][] expandedGrid, int row, int col){
+
+        Queue<int[]> queue = new LinkedList<>();
+
+        queue.add(new int[] {row, col});
+
+        expandedGrid[row][col] = 1;
+
+        while(!queue.isEmpty()){
+
+            int[] arr = queue.poll();
+
+            for(int i=0; i<4; i++){
+                int newRow = arr[0] + directions[i][0];
+                int newCol = arr[1] + directions[i][1];
+
+                if(isValidCell(newRow, newCol, expandedGrid) && expandedGrid[newRow][newCol] == 0){
+                    expandedGrid[newRow][newCol] = 1;
+                    queue.add(new int[] {newRow, newCol});
+                }
+            }
+        }
+    }
+
+    public static boolean isValidCell(int row, int col, int[][] expandedGrid){
+
+        if(row >= 0 && row <= expandedGrid.length-1 && col >= 0 && col < expandedGrid[0].length){
+            return true;
+        }
+        return false;
+    }
+}
