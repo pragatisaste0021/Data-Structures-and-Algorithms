@@ -1,0 +1,43 @@
+Problem Name: Binary String With Substrings Representing 1 To N
+
+Solution Code:
+
+class Solution {
+    public boolean queryString(String s, int n) {
+        
+        int m = s.length();
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int i=0; i<m; i++){
+
+            StringBuilder str = new StringBuilder();
+
+            for(int j=i; j<m; j++){
+
+                str.append(s.charAt(j));
+
+                int val = findDecimalValue(str);
+
+                if(val >= 1 && val <= n){
+                    set.add(val);
+                }
+            }
+        }
+        return set.size() == n;
+    }
+
+    public static int findDecimalValue(StringBuilder str){
+
+        int n = str.length();
+
+        int val = 0;
+
+        for(int i=n-1; i>=0; i--){
+            if(str.charAt(i) == '1'){
+                val += (1 << (n - i - 1));
+            }
+        }
+        return val;
+    }
+}
