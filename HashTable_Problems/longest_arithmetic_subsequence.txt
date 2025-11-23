@@ -1,0 +1,55 @@
+Problem Name: Longest Arithmetic Subsequence
+
+Solution Code: 
+
+class Solution {
+    public int longestArithSeqLength(int[] nums) {
+
+        int n = nums.length;
+
+        int[][][] dp = new int[n][600][2];
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<600; j++){
+                dp[i][j][0] = 1;
+                dp[i][j][1] = 1;
+            }
+        }  
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        map.put(nums[0], 0);
+
+        for(int i=1; i<n; i++){
+
+            for(int j=0; j<600; j++){
+
+                int val1 = nums[i] - j;
+
+                if(map.containsKey(val1)){
+                    int idx = map.get(val1);
+                    dp[i][j][0] = dp[idx][j][0] + 1;
+                }
+
+                int val2 = nums[i] + j;
+
+                if(map.containsKey(val2)){
+                    int idx = map.get(val2);
+                    dp[i][j][1] = dp[idx][j][1] + 1;
+                }
+            }
+            map.put(nums[i], i);
+        }
+
+        int ans = Integer.MIN_VALUE;
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<600; j++){
+                // System.out.println(i + " " + j + " " + dp[i][j][0] + " " + dp[i][j][1]);
+                ans = Math.max(ans, dp[i][j][0]);
+                ans = Math.max(ans, dp[i][j][1]);
+            }
+        }
+        return ans; 
+    }
+}
