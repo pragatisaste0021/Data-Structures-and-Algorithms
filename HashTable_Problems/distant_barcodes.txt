@@ -1,0 +1,59 @@
+Problem Name: Distant Barcodes
+
+Solution Code:
+
+class Solution {
+    public int[] rearrangeBarcodes(int[] barcodes) {
+        
+        int n = barcodes.length;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a1, a2) -> Integer.compare(a2[1], a1[1]));
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.put(barcodes[i], map.getOrDefault(barcodes[i], 0) + 1);
+        }
+
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+            pq.add(new int[]{entry.getKey(), entry.getValue()});
+        }
+
+        List<Integer> list = new ArrayList<>();
+
+        list.add(pq.peek()[0]);
+
+        int[] a = pq.poll();
+
+        a[1]--;
+
+        pq.add(a);
+
+        for(int i=1; i<n; i++){
+            
+            if(pq.peek()[0] != list.get(i-1)){
+                list.add(pq.peek()[0]);
+                int[] arr = pq.poll();
+                arr[1]--;
+                pq.add(arr);
+            }
+            else{
+                int[] arr = pq.poll();
+                if(pq.isEmpty()){
+                    break;
+                }
+                list.add(pq.peek()[0]);
+                int[] temp = pq.poll();
+                temp[1]--;
+                if(temp[1] != 0){
+                    pq.add(temp);
+                }
+                pq.add(arr);
+            }
+        }
+
+        int[] ans = list.stream().mapToInt(Integer :: intValue).toArray();
+
+        return ans;
+    }
+}
