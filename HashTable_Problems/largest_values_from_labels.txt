@@ -1,0 +1,33 @@
+Problem Name: Largest Values From Labels
+
+Solution Code:
+
+class Solution {
+    public int largestValsFromLabels(int[] values, int[] labels, int numWanted, int useLimit) {
+        
+        int n = values.length;
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a1, a2) -> Integer.compare(a2[0], a1[0]));
+        HashMap<Integer, Integer> labelMap = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            pq.add(new int[]{values[i], labels[i]});
+        }
+
+        int maxSum = 0;
+        int count = 0;
+
+        while(!pq.isEmpty()){
+            if(labelMap.getOrDefault(pq.peek()[1], 0) < useLimit){
+                maxSum += pq.peek()[0];
+                count++;
+            }
+            if(count == numWanted){
+                break;
+            }
+            labelMap.put(pq.peek()[1], labelMap.getOrDefault(pq.peek()[1], 0) + 1);
+            pq.poll();
+        }
+        return maxSum;
+    }
+}
