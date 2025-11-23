@@ -1,0 +1,34 @@
+Problem Name: Flip Columns For Maximum Number of Equal Rows
+
+Solution Code: 
+
+class Solution {
+    public int maxEqualRowsAfterFlips(int[][] matrix) {
+
+        int m = matrix.length;
+        int n = matrix[0].length;
+        
+        HashMap<String, Integer> hashmap = new HashMap<String, Integer>();
+    
+        for(int[] row : matrix){
+        String pattern = "";
+        for(int j=1; j<n; j++){
+            if(row[j] == row[j-1]){
+            pattern += "TT";
+            }
+            else{
+            pattern += "TF";
+            }
+        }
+        hashmap.put(pattern, hashmap.getOrDefault(pattern, 0) + 1);
+        }
+        
+        int maxCount = 0;
+        
+        for(int frequency : hashmap.values()){
+        maxCount = Math.max(maxCount, frequency);
+        }
+        
+        return maxCount;
+    }
+}
