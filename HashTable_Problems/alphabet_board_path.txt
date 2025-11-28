@@ -1,0 +1,70 @@
+Problem Name: Alphabet Board Path
+
+Solution Code: 
+
+class Solution {
+    public String alphabetBoardPath(String target) {
+        
+        int n = target.length();
+
+        HashMap<Character, int[]> map = new HashMap<>();
+
+        int row = 0, col = 0;
+
+        for(int i=0; i<26; i++){
+            map.put((char)(i + 'a'), new int[]{row, col});
+            col++;
+            if((i+1) % 5 == 0){
+                col = 0;
+                row++;
+            }
+        }
+
+        int startRow = 0, startCol = 0;
+
+        int targetRow = 0, targetCol = 0;
+
+        StringBuilder str = new StringBuilder();
+
+        for(int i=0; i<n; i++){
+
+            targetRow = map.get(target.charAt(i))[0];
+            targetCol = map.get(target.charAt(i))[1];
+
+            if(startRow > targetRow){
+                while(startRow > targetRow){
+                    str.append('U');
+                    startRow--;
+                }
+            }
+            else if(startRow < targetRow){
+                while(startRow < targetRow && startRow < 4){
+                    str.append('D');
+                    startRow++;
+                }
+            }
+
+            if(startCol > targetCol){
+                while(startCol > targetCol){
+                    str.append('L');
+                    startCol--;
+                }
+            }
+            else if(startCol < targetCol){
+                while(startCol < targetCol){
+                    str.append('R');
+                    startCol++;
+                }
+            }
+
+            if(i == 0 && target.charAt(i) == 'z' || i > 0 && target.charAt(i-1) != 'z' && target.charAt(i) == 'z'){
+                str.append('D');
+            }
+
+            str.append('!');
+            startRow = targetRow;
+            startCol = targetCol;
+        }
+        return str.toString();
+    }
+}
