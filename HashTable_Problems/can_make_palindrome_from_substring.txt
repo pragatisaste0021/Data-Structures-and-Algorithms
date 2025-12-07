@@ -1,0 +1,49 @@
+Problem Name: Can Make Palindrome from Substring
+
+Solution Code:
+
+class Solution {
+    public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+        
+        int n = s.length();
+        int m = queries.length;
+
+        HashMap<Integer, int[]> map = new HashMap<>();
+
+        List<Boolean> ans = new ArrayList<>();
+
+        int[] freqArr = new int[26];
+
+        for(int i=0; i<n; i++){
+            int[] arr = freqArr.clone();
+            arr[s.charAt(i) - 'a']++;
+            freqArr[s.charAt(i) - 'a']++;
+            map.put(i, arr);
+        }
+
+        for(int i=0; i<m; i++){
+            int nonMatching = 0;
+            int matching = 0;
+            int[] second = map.get(queries[i][1]);
+            int[] first;
+            if(queries[i][0] != 0){
+                first = map.get(queries[i][0] - 1);
+            }
+            else{
+                first = new int[26];
+            }
+
+            for(int j=0; j<26; j++){
+                nonMatching += (second[j] - first[j]) % 2;
+            }
+
+            if(queries[i][2] >= nonMatching/2){
+                ans.add(true);
+            }
+            else{
+                ans.add(false);
+            }
+        }
+        return ans;
+    }
+}
