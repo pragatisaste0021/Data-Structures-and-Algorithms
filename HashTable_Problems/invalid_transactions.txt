@@ -1,0 +1,71 @@
+Problem Name: Invalid Transactions
+
+Solution Code:
+
+class Solution {
+    public List<String> invalidTransactions(String[] transactions) {
+        
+
+        Person[] newArray = new Person[transactions.length];
+        int i = 0;
+        
+        // Step 1: Convert transactions into Person objects
+        for (String s : transactions) {
+            String[] arr = s.split(",");
+            Person p = new Person(arr[0], Integer.parseInt(arr[1]), Integer.parseInt(arr[2]), arr[3],
+                    Integer.parseInt(arr[1]) + 60);
+            newArray[i] = p;
+            i++;
+        }
+
+        List<String> result = new ArrayList<>();
+
+        // Step 2: Check each transaction for invalid conditions
+        for (Person person : newArray) {
+            boolean invalid = false;
+            
+            // Condition 1: Amount greater than 1000
+            if (person.amount > 1000) {
+                invalid = true;
+            }
+
+            // Condition 2: Same person, different city, within 60 minutes
+            if (!invalid) {
+                for (Person prev : newArray) {
+                    if (person.name.equals(prev.name) && !person.city.equals(prev.city)
+                            && Math.abs(person.startTime - prev.startTime) <= 60) {
+                        invalid = true;
+                        break;
+                    }
+                }
+            }
+
+            // Add to result if invalid
+            if (invalid) {
+                result.add(person.toCommaSeparatedString());
+            }
+        }
+
+        return result; 
+    }
+}
+
+class Person {
+        String name;
+        int startTime;
+        int amount;
+        String city;
+        int endTime; // startTime + 60
+
+        Person(String name, int startTime, int amount, String city, int endTime) {
+            this.name = name;
+            this.amount = amount;
+            this.city = city;
+            this.startTime = startTime;
+            this.endTime = endTime;
+        }
+
+        public String toCommaSeparatedString() {
+            return name + "," + startTime + "," + amount + "," + city;
+        }
+    }
