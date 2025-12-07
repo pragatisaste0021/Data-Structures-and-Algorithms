@@ -1,0 +1,64 @@
+Problem Name: Smallest String With Swaps
+
+Solution Code:
+
+class Solution {
+
+    private int[] parent;
+
+    public String smallestStringWithSwaps(String s, List<List<Integer>> pairs) {
+        
+        if(s == null || s.length() == 0){
+            return null;
+        }
+
+        parent = new int[s.length()];
+
+        for(int i=0; i<s.length(); i++){
+            parent[i] = i;
+        }
+
+        for(List<Integer> pair : pairs){
+            union(pair.get(0), pair.get(1));
+        }
+
+        Map<Integer, PriorityQueue<Character>> map = new HashMap<>();
+
+        char[] sChar = s.toCharArray();
+
+        for(int i=0; i<sChar.length; i++){
+            int root = find(i);
+            map.putIfAbsent(root, new PriorityQueue<>());
+            map.get(root).add(sChar[i]);
+        }
+
+        StringBuilder str = new StringBuilder();
+
+        for(int i=0; i<sChar.length; i++){
+            str.append(map.get(find(i)).poll());
+        }
+        return str.toString();
+    }
+
+    private int find(int index){
+
+        while(parent[index] != index){
+            parent[index] = parent[parent[index]];
+            index = parent[index];
+        }
+        return index;
+    }
+
+    private void union(int idx1, int idx2){
+
+        int idx1Parent = find(idx1);
+        int idx2Parent = find(idx2);
+
+        if(idx1Parent < idx2Parent){
+            parent[idx2Parent] = idx1Parent;
+        }
+        else{
+            parent[idx1Parent] = idx2Parent;
+        }
+    }
+}
