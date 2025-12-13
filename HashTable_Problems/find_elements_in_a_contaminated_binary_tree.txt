@@ -1,0 +1,26 @@
+Problem Name: Find Elements in a Contaminated Binary Tree
+
+Solution Code:
+
+class FindElements {
+
+    HashSet<Integer> set;
+
+    public FindElements(TreeNode root) {
+        set = new HashSet<>();
+        dfs(root, 0);
+    }
+    
+    public boolean find(int target) {
+        return set.contains(target);
+    }
+
+    public void dfs(TreeNode currentNode, int currentValue){
+        if(currentNode == null){
+            return;
+        }
+        set.add(currentValue);
+        dfs(currentNode.left, currentValue*2 + 1);
+        dfs(currentNode.right, currentValue*2 + 2);
+    }
+}
