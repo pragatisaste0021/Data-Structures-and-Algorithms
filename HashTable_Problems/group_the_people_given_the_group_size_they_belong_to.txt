@@ -1,0 +1,35 @@
+Problem Name: Group the People Given the Group Size They Belong To
+
+Solution Code:
+
+class Solution {
+    public List<List<Integer>> groupThePeople(int[] groupSizes) {
+        
+        int n = groupSizes.length;
+
+        List<List<Integer>> list = new ArrayList<>();
+
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            List<Integer> l = map.getOrDefault(groupSizes[i], new ArrayList<>());
+            l.add(i);
+            map.put(groupSizes[i], l);
+        }
+
+        for(Map.Entry<Integer, List<Integer>> entry : map.entrySet()){
+            List<Integer> l = entry.getValue();
+            int i = 0;
+            System.out.println(l);
+            while(i < l.size()){
+                List<Integer> li = new ArrayList<>();
+                while(li.size() != entry.getKey()){
+                    li.add(l.get(i));
+                    i++;
+                }
+                list.add(li);
+            }
+        }
+        return list;
+    }
+}
