@@ -1,0 +1,96 @@
+Problem Name: Get Watched Videos by Your Friends
+
+Solution Code:
+
+class Solution {
+    public List<String> watchedVideosByFriends(List<List<String>> watchedVideos, int[][] friends, int id, int level) {
+        
+        List<List<Integer>> adjList = new ArrayList<>();
+
+        int n = friends.length;
+
+        for(int i=0; i<n; i++){
+            adjList.add(new ArrayList<>());
+        }
+
+        for(int i=0; i<n; i++){
+            for(int j=0; j<friends[i].length; j++){
+                adjList.get(i).add(friends[i][j]);
+            }
+        }
+
+        HashMap<String, Integer> map = new HashMap<>();
+
+        int l = 0;
+
+        Queue<Integer> queue = new LinkedList<>();
+
+        boolean[] visited = new boolean[n];
+
+        queue.add(id);
+
+        visited[id] = true;
+
+        while(!queue.isEmpty()){
+
+            int size = queue.size();
+
+            while(size-- > 0){
+                int frnd = queue.poll();
+                for(int val : adjList.get(frnd)){
+                    if(!visited[val]){
+                        queue.add(val);
+                        visited[val] = true;
+                    }
+                }
+            }
+            l++;
+
+            if(l == level){
+                break;
+            }
+        }
+
+        // System.out.println(queue);
+
+        while(!queue.isEmpty()){
+            int f = queue.poll();
+            List<String> a = watchedVideos.get(f);
+            for(int i=0; i<a.size(); i++){
+                map.put(a.get(i), map.getOrDefault(a.get(i), 0) + 1);
+            }
+        }
+
+        Queue<Pair> pq = new PriorityQueue<>((a, b) -> {
+            if(a.freq != b.freq){
+                return Integer.compare(a.freq, b.freq);
+            }
+            return a.video.compareTo(b.video);
+        });
+
+        for(Map.Entry<String, Integer> entry : map.entrySet()){
+
+            pq.add(new Pair(entry.getKey(), entry.getValue()));
+        }
+
+        List<String> ans = new ArrayList<>();
+
+        while(!pq.isEmpty()){
+            Pair pair = pq.poll();
+            // System.out.println(pair.video + " " + pair.freq);
+            ans.add(pair.video);
+        }
+        return ans;
+    }
+}
+
+class Pair{
+
+    String video;
+    int freq;
+
+    public Pair(String video, int freq){
+        this.video = video;
+        this.freq = freq;
+    }
+}
