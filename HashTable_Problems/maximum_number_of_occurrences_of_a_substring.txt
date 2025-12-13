@@ -1,0 +1,49 @@
+Problem Name: Maximum Number of Occurrences of a Substring
+
+Solution Code:
+
+class Solution {
+    public int maxFreq(String s, int maxLetters, int minSize, int maxSize) {
+        
+        int n = s.length();
+
+        HashMap<Character, Integer> map1 = new HashMap<>();
+
+        HashMap<String, Integer> map2 = new HashMap<>();
+
+        System.out.println(map1);
+
+        int i=0, j=0;
+
+        boolean flag = false;
+
+        while(j < n){
+
+            map1.put(s.charAt(j), map1.getOrDefault(s.charAt(j), 0) + 1);
+
+            while(j-i+1 > minSize){
+               map1.put(s.charAt(i), map1.getOrDefault(s.charAt(i), 0) - 1);
+               if(map1.get(s.charAt(i)) == 0){
+                map1.remove(s.charAt(i));
+               }
+                i++;
+            }
+            
+            if(j-i+1 == minSize && map1.size() <= maxLetters){
+                map2.put(s.substring(i, j+1), map2.getOrDefault(s.substring(i, j+1), 0) + 1);
+            }          
+
+            j++;
+        }
+
+       
+        int maxOcc = 0;
+
+        System.out.println(map1);
+
+        for(Map.Entry<String, Integer> entry : map2.entrySet()){
+            maxOcc = Math.max(maxOcc, entry.getValue());
+        }
+        return maxOcc;
+    }
+}
