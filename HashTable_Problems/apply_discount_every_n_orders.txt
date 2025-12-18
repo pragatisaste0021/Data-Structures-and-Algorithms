@@ -1,0 +1,41 @@
+Problem Name: Apply Discount Every n Orders
+
+Solution Code:
+
+class Cashier {
+
+    int n, discount;
+
+    int[] products;
+    int[] prices;
+
+    HashMap<Integer, Integer> map = new HashMap<>();
+
+    int customer = 0;
+
+    public Cashier(int n, int discount, int[] products, int[] prices) {
+        this.n = n;
+        this.discount = discount;
+        this.products = products;
+        this.prices = prices;
+
+        for(int i=0; i<products.length; i++){
+            map.put(products[i], prices[i]);
+        }
+    }
+    
+    public double getBill(int[] product, int[] amount) {
+        
+        double amt = 0;
+
+        for(int i=0; i<product.length; i++){
+            amt += amount[i] * map.get(product[i]);
+        }
+        customer++;
+        if(customer % n == 0){
+            double dis = ((double)100 - discount)/100;
+            return (double)amt * dis;
+        }
+        return amt;
+    }
+}
