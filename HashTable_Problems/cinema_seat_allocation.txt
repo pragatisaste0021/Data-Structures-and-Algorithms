@@ -1,0 +1,50 @@
+Problem Name: Cinema Seat Allocation
+
+Solution Code:
+
+class Solution {
+    public int maxNumberOfFamilies(int n, int[][] reservedSeats) {
+
+        int m = reservedSeats.length;
+
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+
+        for(int i=0; i<m; i++){
+            map.putIfAbsent(reservedSeats[i][0], new ArrayList<>());
+            map.get(reservedSeats[i][0]).add(reservedSeats[i][1]);
+        }
+
+        int remained = n - map.size();
+
+        int ans = remained * 2;
+
+        for(Map.Entry<Integer, List<Integer>> entry : map.entrySet()){
+
+            List<Integer> list = entry.getValue();
+
+            if(!list.contains(4) && !list.contains(5)){
+                if(!list.contains(2) && !list.contains(3)){
+                    list.add(4);
+                    list.add(5);
+                    list.add(2);
+                    list.add(3);
+                    ans++;
+                }
+            }
+            if(!list.contains(6) && !list.contains(7)){
+                if(!list.contains(8) && !list.contains(9)){
+                    list.add(6);
+                    list.add(7);
+                    list.add(8);
+                    list.add(9);
+                    ans++;
+                }
+            }
+
+            if(!list.contains(4) && !list.contains(5) && !list.contains(6) && !list.contains(7)){
+                ans++;
+            }
+        }
+        return ans;
+    }
+}
