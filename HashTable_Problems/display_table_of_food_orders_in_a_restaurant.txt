@@ -1,0 +1,64 @@
+Problem Name: Display Table of Food Orders in a Restaurant
+
+Solution Code:
+
+class Solution {
+    public List<List<String>> displayTable(List<List<String>> orders) {
+        
+        int n = orders.size();
+
+        HashMap<String, TreeMap<String, Integer>> map = new HashMap<>();
+
+        HashSet<String> set = new HashSet<>();
+
+        for(int i=1; i<=500; i++){
+            map.put(Integer.toString(i), new TreeMap<>());
+
+            TreeMap<String, Integer> mp = map.get(Integer.toString(i));
+
+            for(int j=0; j<n; j++){
+                mp.put(orders.get(j).get(2), 0);
+                set.add(orders.get(j).get(1));
+            }
+        }
+
+        for(int i=0; i<n; i++){
+            if(!map.containsKey(orders.get(i).get(1))){
+                map.put(orders.get(i).get(1), new TreeMap<>());
+            }
+            TreeMap<String, Integer> mp = map.get(orders.get(i).get(1));
+            mp.put(orders.get(i).get(2), mp.getOrDefault(orders.get(i).get(2), 0) + 1);
+        } 
+
+        List<List<String>> res = new ArrayList<>();
+
+         TreeMap<String, Integer> m = map.get(orders.get(0).get(1));
+
+         List<String> l = new ArrayList<>();
+
+         l.add("Table");
+
+         for(Map.Entry<String, Integer> entry : m.entrySet()){
+            l.add(entry.getKey());
+         }
+
+         res.add(l);
+
+        for(int i=1; i<=500; i++){
+
+            if(set.contains(Integer.toString(i))){
+                m = map.get(Integer.toString(i));
+
+                l = new ArrayList<>();
+
+                l.add(Integer.toString(i));
+
+                for(Map.Entry<String, Integer> e : m.entrySet()){
+                    l.add(Integer.toString(e.getValue()));
+                }
+                res.add(l);
+            }
+        }
+        return res;
+    }
+}
