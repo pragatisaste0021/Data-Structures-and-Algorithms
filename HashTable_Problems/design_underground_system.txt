@@ -1,0 +1,47 @@
+Problem Name: Design Underground System
+
+Solution Code:
+
+class UndergroundSystem {
+
+    HashMap<Integer, Pair> map1;
+    HashMap<String, int[]> map2;
+
+    public UndergroundSystem() {
+        
+        map1 = new HashMap<>();
+        map2 = new HashMap<>();
+    }
+    
+    public void checkIn(int id, String stationName, int t) {
+        map1.put(id, new Pair(stationName, t));
+    }
+    
+    public void checkOut(int id, String stationName, int t) {
+        Pair p = map1.get(id);
+        String station = p.startStation + "/" + stationName;
+        map2.putIfAbsent(station, new int[2]);
+        int totalTime = t - p.time;
+        map2.get(station)[0] += totalTime;
+        map2.get(station)[1]++;
+    }
+    
+    public double getAverageTime(String startStation, String endStation) {
+        String station = startStation + "/" +  endStation;
+        int[] val = map2.get(station);
+        
+        double avg = (double)val[0]/val[1];
+        return avg;
+    }
+}
+
+class Pair{
+
+    String startStation;
+    int time;
+
+    public Pair(String startStation, int time){
+        this.startStation = startStation;
+        this.time = time; 
+    }
+}
