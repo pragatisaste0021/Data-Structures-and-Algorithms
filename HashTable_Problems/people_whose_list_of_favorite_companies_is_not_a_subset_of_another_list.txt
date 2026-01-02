@@ -1,0 +1,49 @@
+Problem Name: People Whose List of Favorite Companies Is Not a Subset of Another List
+
+Solution Code:
+
+class Solution {
+    public List<Integer> peopleIndexes(List<List<String>> favoriteCompanies) {
+        
+        int n = favoriteCompanies.size();
+
+        HashMap<Integer, HashMap<String, Integer>> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.putIfAbsent(i, new HashMap<String, Integer>());
+            for(String val : favoriteCompanies.get(i)){
+                HashMap<String, Integer> map1 = map.get(i);
+                map1.put(val, map1.getOrDefault(val, 0) + 1);
+            }
+        }
+
+        List<Integer> list = new ArrayList<>();
+
+        for(int i=0; i<n; i++){
+            List<String> list1 = favoriteCompanies.get(i);
+            HashMap<String, Integer> map1 = map.get(i);
+            boolean flag = false;
+            for(Map.Entry<Integer, HashMap<String, Integer>> entry : map.entrySet()){
+                int cnt = 0;
+                if(entry.getKey() != i){
+                    for(String val : list1){
+                        if(map1.get(val) == entry.getValue().getOrDefault(val, 0)){
+                            cnt++;
+                        }
+                    }
+                }
+                if(cnt != list1.size()){
+                    
+                }
+                else{
+                    flag = true;
+                }
+            }
+
+            if(flag == false){
+                list.add(i);
+            }
+        }
+        return list;
+    }
+}
