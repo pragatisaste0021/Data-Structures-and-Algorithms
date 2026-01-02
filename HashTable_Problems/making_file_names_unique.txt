@@ -1,0 +1,52 @@
+Problem Name: Making File Names Unique
+
+Solution Code:
+
+class Solution {
+    public String[] getFolderNames(String[] names) {
+        
+        int n = names.length;
+
+        // HashSet<String> set1 = new HashSet<>();
+
+        // for(int i=0; i<n; i++){
+        //     set1.add(names[i]);
+        // }
+
+        HashSet<String> set2 = new HashSet<>();
+
+        HashMap<String, Integer> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.put(names[i], 1);
+        }
+
+        String[] ans = new String[n];
+
+        for(int i=0; i<n; i++){
+            if(!set2.contains(names[i])){
+                ans[i] = names[i];
+            }
+            else{
+                int val = map.get(names[i]);
+                StringBuilder str = new StringBuilder(names[i]);
+                String s = Integer.toString(val);
+                // System.out.println(s);
+                int len = s.length();
+                str.append("(").append(s).append(")");
+                // System.out.println(str);
+                while(set2.contains(str.toString())){
+                    str.delete(str.length() - (len+2), str.length());
+                    val++;
+                    s = Integer.toString(val);
+                    len = s.length();
+                    str.append("(").append(s).append(")");
+                }
+                map.put(names[i], val+1);
+                ans[i] = str.toString();
+            }
+            set2.add(ans[i]);
+        }
+        return ans;
+    }
+}
