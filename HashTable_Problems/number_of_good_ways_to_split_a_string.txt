@@ -1,0 +1,34 @@
+Problem Name: Number of Good Ways to Split a String
+
+Solution Code:
+
+class Solution {
+    public int numSplits(String s) {
+
+        int n = s.length();
+        
+        int ans = 0;
+
+        HashMap<Character, Integer> prefix = new HashMap<>();
+
+        HashMap<Character, Integer> suffix = new HashMap<>();
+
+        for(int i=1; i<n; i++){
+            suffix.put(s.charAt(i), suffix.getOrDefault(s.charAt(i), 0) + 1);
+        }
+
+        prefix.put(s.charAt(0), 1);
+
+        for(int i=1; i<n; i++){
+            if(prefix.size() == suffix.size()){
+                ans++;
+            }
+            suffix.put(s.charAt(i), suffix.getOrDefault(s.charAt(i), 0) - 1);
+            if(suffix.getOrDefault(s.charAt(i), 0) <= 0){
+                suffix.remove(s.charAt(i));
+            }
+            prefix.put(s.charAt(i), prefix.getOrDefault(s.charAt(i), 0) + 1);
+        }
+        return ans;
+    }
+}
