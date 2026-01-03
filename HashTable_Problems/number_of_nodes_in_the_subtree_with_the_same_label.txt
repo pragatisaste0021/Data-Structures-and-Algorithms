@@ -1,0 +1,46 @@
+Problem Name:Number of Nodes in the Sub-Tree With the Same Label
+
+Solution Code:
+
+class Solution {
+    public int[] countSubTrees(int n, int[][] edges, String labels) {
+        
+        int m = edges.length;
+
+        int[] ans = new int[n];
+
+        List<List<Integer>> adjList = new ArrayList<>();
+
+        for(int i=0; i<n; i++){
+            adjList.add(new ArrayList<>());
+        }
+
+        for(int i=0; i<m; i++){
+            adjList.get(edges[i][0]).add(edges[i][1]);
+            adjList.get(edges[i][1]).add(edges[i][0]);
+        }
+
+        dfs(0, -1, adjList, labels, ans);
+
+        return ans;
+    }
+
+    public static HashMap<Character, Integer> dfs(int root, int parent, List<List<Integer>> adjList, String labels, int[] ans){
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        map.put(labels.charAt(root), map.getOrDefault(labels.charAt(root), 0) + 1);
+
+        for(int child : adjList.get(root)){
+            if(child != parent){
+                HashMap<Character, Integer> map1 = dfs(child, root, adjList, labels, ans);
+
+                for(Map.Entry<Character, Integer> entry : map1.entrySet()){
+                    map.put(entry.getKey(), map.getOrDefault(entry.getKey(), 0) + entry.getValue());
+                }
+            }
+        }
+        ans[root] = map.getOrDefault(labels.charAt(root), 0);
+        return map;
+    }
+}
