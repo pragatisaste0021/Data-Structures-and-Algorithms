@@ -1,0 +1,43 @@
+Problem Name: Alert Using Same Key-Card Three or More Times in a One Hour Period
+
+Solution Code:
+
+class Solution {
+    public List<String> alertNames(String[] keyName, String[] keyTime) {
+        
+        int n = keyName.length;
+
+        HashMap<String, List<Integer>> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.putIfAbsent(keyName[i], new ArrayList<>());
+
+            int hrs = Integer.parseInt(keyTime[i].substring(0, 2));
+            int mins = Integer.parseInt(keyTime[i].substring(3, 5));
+
+            int totalMinutes = hrs * 60;
+            totalMinutes += mins;
+
+            map.get(keyName[i]).add(totalMinutes);
+        }
+
+        List<String> ans = new ArrayList<>();
+
+        for(Map.Entry<String, List<Integer>> entry : map.entrySet()){
+
+            List<Integer> list = entry.getValue();
+
+            Collections.sort(list);
+
+            for(int i=0; i<=list.size()-3; i++){
+                int sum = Math.abs(list.get(i+1) - list.get(i)) + Math.abs(list.get(i+2) - list.get(i+1));
+                if(sum <= 60){
+                    ans.add(entry.getKey());
+                    break;
+                } 
+            }
+        }
+        Collections.sort(ans);
+        return ans;
+    }
+}
