@@ -1,0 +1,36 @@
+Problem Name: Number of Ways Where Square of Number Is Equal to Product of Two Numbers
+
+Solution Code:
+
+class Solution {
+    public int numTriplets(int[] nums1, int[] nums2) {
+        
+        int n = nums1.length;
+        int m = nums2.length;
+
+        int count = 0;
+
+        for(int i=0; i<n; i++){
+            long target = (long)nums1[i] * (long)nums1[i];
+            HashMap<Long, Long> map = new HashMap<>(); 
+            for(int j=0; j<m; j++){
+                if(target % nums2[j] == 0){
+                    count += map.getOrDefault((long)target/nums2[j], 0L);
+                }
+                map.put((long)nums2[j], map.getOrDefault((long)nums2[j], 0L) + 1);
+            }
+        }
+
+        for(int i=0; i<m; i++){
+            long target = (long)nums2[i] * (long)nums2[i];
+            HashMap<Long, Long> map = new HashMap<>();
+            for(int j=0; j<n; j++){
+                if(target % nums1[j] == 0){
+                    count += map.getOrDefault((long)target/nums1[j], 0L);
+                }
+                map.put((long)nums1[j], map.getOrDefault((long)nums1[j], 0L) + 1);
+            }
+        }
+        return count;
+    }
+}
