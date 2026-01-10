@@ -1,0 +1,31 @@
+Problem Name: Find Latest Group of Size M
+
+Solution Code:
+
+class Solution {
+    public int findLatestStep(int[] arr, int m) {
+        
+        int n = arr.length;
+
+        if(m == n){
+            return n;
+        }
+
+        TreeSet<Integer> set = new TreeSet<>();
+
+        set.add(0);
+        set.add(n+1);
+
+        for(int i=n-1; i>=0; i--){
+
+            int left = set.floor(arr[i]);
+            int right = set.ceiling(arr[i]);
+
+            if(arr[i]-left-1 == m || right-arr[i]-1 == m){
+                return i;
+            }
+            set.add(arr[i]);
+        }
+        return -1;   
+    }
+}
