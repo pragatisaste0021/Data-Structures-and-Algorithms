@@ -1,0 +1,51 @@
+Problem Name: Count Substrings That Differ by One Character
+
+Solution Code:
+
+class Solution {
+    public int countSubstrings(String s, String t) {
+        
+        int n = s.length();
+        int m = t.length();
+
+        HashMap<String, Integer> map = new HashMap<>();
+
+        for(int i=0; i<m; i++){
+            for(int j=i; j<m; j++){
+                String str = t.substring(i, j+1);
+                map.put(str, map.getOrDefault(str, 0) + 1);
+            }
+        }
+        // System.out.println(map);
+        int ans = 0;
+
+        for(int i=0; i<n; i++){
+            StringBuilder str = new StringBuilder();
+            for(int j=i; j<n; j++){
+                str.append(s.charAt(j));
+
+                // System.out.println("string " + str);
+
+                for(int k=0; k<str.length(); k++){
+
+                    StringBuilder str1 = new StringBuilder(str);
+
+                    for(char c='a'; c<='z'; c++){
+
+                        if(c != str1.charAt(k)){
+
+                            str1.setCharAt(k, c);
+
+                            // System.out.println(str1 + " " + map.getOrDefault(str1.toString(), 0));
+
+                            ans += map.getOrDefault(str1.toString(), 0);
+
+                            str1.setCharAt(k, str.charAt(k));
+                        }
+                    }
+                }
+            }
+        }
+        return ans;
+    }
+}
