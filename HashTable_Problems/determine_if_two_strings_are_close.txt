@@ -1,0 +1,61 @@
+Problem Name: Determine if Two Strings Are Close
+
+Solution Code:
+
+class Solution {
+    public boolean closeStrings(String word1, String word2) {
+        
+        int n = word1.length();
+        int m = word2.length();
+
+        if(n != m){
+            return false;
+        }
+
+        HashMap<Character, Integer> map1 = new HashMap<>();
+        HashMap<Character, Integer> map2 = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map1.put(word1.charAt(i), map1.getOrDefault(word1.charAt(i), 0) + 1);
+        }
+
+        for(int i=0; i<m; i++){
+            map2.put(word2.charAt(i), map2.getOrDefault(word2.charAt(i), 0) + 1);
+        }
+
+        HashMap<Integer, Integer> map3 = new HashMap<>();
+        HashMap<Integer, Integer> map4 = new HashMap<>();
+
+        for(Map.Entry<Character, Integer> entry : map1.entrySet()){
+            map3.put(entry.getValue(), map3.getOrDefault(entry.getValue(), 0) + 1);
+        }
+
+        for(Map.Entry<Character, Integer> entry : map2.entrySet()){
+            map4.put(entry.getValue(), map4.getOrDefault(entry.getValue(), 0) + 1);
+        }
+
+        System.out.println(map3);
+        System.out.println(map4);
+
+        for(Map.Entry<Integer, Integer> entry : map3.entrySet()){
+            if(!map4.containsKey(entry.getKey())){
+                return false;
+            }
+            else{
+                if(entry.getValue() != map4.getOrDefault(entry.getKey(), 0)){
+                    return false;
+                }
+                else{
+                    
+                }
+            }
+        }
+
+        for(int i=0; i<m; i++){
+            if(!map1.containsKey(word2.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
+}
