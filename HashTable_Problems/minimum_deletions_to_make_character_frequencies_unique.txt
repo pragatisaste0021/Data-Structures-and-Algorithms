@@ -1,0 +1,40 @@
+Problem Name: Minimum Deletions to Make Character Frequencies Unique
+
+Solution Code:
+
+class Solution {
+    public int minDeletions(String s) {
+        
+        int n = s.length();
+
+        HashMap<Character, Integer> map = new HashMap<>();
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a1, a2) -> Integer.compare(a2[1], a1[1]));
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int i=0; i<n; i++){
+            map.put(s.charAt(i), map.getOrDefault(s.charAt(i), 0) + 1);
+        }
+
+        for(Map.Entry<Character, Integer> entry : map.entrySet()){
+            pq.add(new int[] {entry.getKey() - 'a', entry.getValue()});
+        }
+
+        int minOperations = 0;
+
+        while(!pq.isEmpty()){
+            int[] arr = pq.poll();
+            int count = arr[1];
+            while(set.contains(count)){
+                minOperations++;
+                count--;
+            }
+            if(count != 0){
+                set.add(count);
+            }
+        }
+
+        return minOperations;
+    }
+}
