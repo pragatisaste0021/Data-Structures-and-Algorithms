@@ -1,0 +1,60 @@
+Problem: Minimum Number of People to Teach
+
+Solution Code:
+
+class Solution {
+    public int minimumTeachings(int n, int[][] languages, int[][] friendships) {
+        
+        HashMap<Integer,HashSet<Integer>> languageMap = new HashMap<>();
+        
+        for(int i=0;i<languages.length;i++){
+            
+            languageMap.put(i+1,new HashSet<>());
+            
+            for(int l : languages[i])
+                languageMap.get(i+1).add(l);
+            
+        }
+        
+        int ans = languages.length;
+
+        for(int i=1;i<=n;i++){
+            ans = Math.min(ans,num_of_users_to_teach(i,friendships,languageMap));
+        }
+        
+        return ans;
+    }
+
+     private int num_of_users_to_teach(int lang,int[][] friendships,  HashMap<Integer,HashSet<Integer>> languageMap){
+        
+        HashSet<Integer> temp = new HashSet<>();
+        
+        for(int i=0;i<friendships.length;i++){
+          
+            int first = friendships[i][0];
+            int second = friendships[i][1];
+    
+            HashSet<Integer> lang_first = languageMap.get(first);
+            HashSet<Integer> lang_second = languageMap.get(second);
+            
+            if(!isCommon(lang_first,lang_second)){
+                if(!lang_first.contains(lang))
+                    temp.add(first);
+                if(!lang_second.contains(lang))
+                    temp.add(second);
+            }  
+        }  
+        return temp.size();   
+    }
+
+     public boolean isCommon(HashSet<Integer> first,HashSet<Integer> second){
+        
+        for(int k : first){
+            if(second.contains(k))
+                return true;
+        }
+        return false;
+        
+        
+    }
+}
