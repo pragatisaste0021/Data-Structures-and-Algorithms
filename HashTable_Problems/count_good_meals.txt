@@ -1,0 +1,33 @@
+Problem: Count Good Meals
+
+Solution Code: 
+
+class Solution {
+
+    static int MOD = 1000000007;
+
+    public int countPairs(int[] deliciousness) {
+        
+        int n = deliciousness.length;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        long ans = 0;
+
+        for(int i=0; i<n; i++){
+
+            for(int j=0; j<=21; j++){
+
+                int pow = (1 << j);
+
+                int target = pow - deliciousness[i];
+
+                // System.out.println(pow + " " + deliciousness[i] + " " + target + " " + map.getOrDefault(target, 0));
+
+                ans = (ans + map.getOrDefault(target, 0)) % MOD;
+            }
+            map.put(deliciousness[i], map.getOrDefault(deliciousness[i], 0) + 1);
+        }
+        return (int)(ans % MOD);
+    }
+}
