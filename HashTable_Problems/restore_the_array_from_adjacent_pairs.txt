@@ -1,0 +1,55 @@
+Problem: Restore the Array From Adjacent Pairs
+
+Solution Code:
+
+class Solution {
+    public int[] restoreArray(int[][] adjacentPairs) {
+        
+        int n = adjacentPairs.length;
+
+        HashMap<Integer, List<Integer>> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.putIfAbsent(adjacentPairs[i][0], new ArrayList<>());
+            map.get(adjacentPairs[i][0]).add(adjacentPairs[i][1]);
+
+            map.putIfAbsent(adjacentPairs[i][1], new ArrayList<>());
+            map.get(adjacentPairs[i][1]).add(adjacentPairs[i][0]);
+        }
+
+        int ele = -1;
+
+        for(Map.Entry<Integer, List<Integer>> entry : map.entrySet()){
+
+            if(entry.getValue().size() == 1){
+                ele = entry.getKey();
+                break;
+            }
+        }
+
+        HashSet<Integer> visited = new HashSet<>();
+
+        int[] ans = new int[n+1];
+
+        visited.add(ele);
+
+        ans[0] = ele;
+
+        int i = 1;
+
+        while(visited.size() <= n){
+            List<Integer> list = map.getOrDefault(ele, new ArrayList<>());
+            
+            for(int val : list){
+                if(!visited.contains(val)){
+                    visited.add(val);
+                    ans[i++] = val;
+                    ele = val;
+                }
+            }
+
+            // System.out.println(visited);
+        }
+        return ans;
+    }
+}
