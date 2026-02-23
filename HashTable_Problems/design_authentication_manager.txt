@@ -1,0 +1,42 @@
+Problem: Design Authentication Manager
+
+Solution Code:
+
+class AuthenticationManager {
+
+    HashMap<String, Integer> map = new HashMap<>();
+
+    int timeToLive;
+
+    public AuthenticationManager(int timeToLive) {
+        this.timeToLive = timeToLive;
+    }
+    
+    public void generate(String tokenId, int currentTime) {
+        map.put(tokenId, currentTime + timeToLive);
+    }
+    
+    public void renew(String tokenId, int currentTime) {
+        if(map.containsKey(tokenId)){
+            if(map.get(tokenId) <= currentTime){
+
+            }
+            else{
+                map.put(tokenId, currentTime + timeToLive);
+            }
+        }
+    }
+    
+    public int countUnexpiredTokens(int currentTime) {
+        
+        int count = 0;
+
+        for(Map.Entry<String, Integer> entry : map.entrySet()){
+
+            if(entry.getValue() > currentTime){
+                count++;
+            }
+        }
+        return count;
+    }
+}
