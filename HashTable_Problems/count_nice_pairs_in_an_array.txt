@@ -1,0 +1,35 @@
+Problem: Count Nice Pairs in an Array
+
+Solution Code:
+
+class Solution {
+
+    static int MOD = 1000000007;
+    
+    public int countNicePairs(int[] nums) {
+        
+        int n = nums.length;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        long count = 0;
+
+        for(int i=0; i<n; i++){
+            int value = nums[i];
+
+            int revNum = 0;
+
+            while(value > 0){
+                revNum = revNum * 10 + value % 10;
+                value /= 10;
+            }
+
+            int n1 = nums[i] - revNum;
+
+            count = (map.getOrDefault(n1, 0) + count) % MOD;
+
+            map.put(n1, map.getOrDefault(n1, 0) + 1);
+        }
+        return (int) count; 
+    }
+}
