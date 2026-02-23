@@ -1,0 +1,25 @@
+Problem: Finding the Users Active Minutes
+
+Solution Code: 
+
+class Solution {
+    public int[] findingUsersActiveMinutes(int[][] logs, int k) {
+
+        int n = logs.length;
+        
+        int[] ans = new int[k];
+
+        HashMap<Integer, HashSet<Integer>> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.putIfAbsent(logs[i][0], new HashSet<>());
+            map.get(logs[i][0]).add(logs[i][1]);
+        }
+
+        for(Map.Entry<Integer, HashSet<Integer>> entry : map.entrySet()){
+            int val = entry.getValue().size();
+            ans[val - 1] += 1;
+        }
+        return ans;    
+    }
+}
