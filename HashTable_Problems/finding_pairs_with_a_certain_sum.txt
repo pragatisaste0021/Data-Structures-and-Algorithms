@@ -1,0 +1,42 @@
+Problem: Finding Pairs With a Certain Sum
+
+Solution Code:
+
+class FindSumPairs {
+
+    int[] nums11; int[] nums12;
+
+    HashMap<Integer, Integer> map = new HashMap<>();
+
+    public FindSumPairs(int[] nums1, int[] nums2) {
+        
+        nums11 = new int[nums1.length];
+        nums12 = new int[nums2.length];
+
+        for(int i=0; i<nums1.length; i++){
+            nums11[i] = nums1[i];
+        }
+
+        for(int i=0; i<nums2.length; i++){
+            nums12[i] = nums2[i];
+            map.put(nums2[i], map.getOrDefault(nums2[i], 0) + 1);
+        }
+    }
+    
+    public void add(int index, int val) {
+        map.put(nums12[index], map.getOrDefault(nums12[index], 0) - 1);
+        if(map.get(nums12[index]) <= 0){
+            map.remove(nums12[index]);
+        }
+        nums12[index] += val;
+        map.put(nums12[index], map.getOrDefault(nums12[index], 0) + 1);
+    }
+    
+    public int count(int tot) {
+        int ans = 0;
+        for(int i=0; i<nums11.length; i++){
+            ans += map.getOrDefault(tot - nums11[i], 0);
+        }
+        return ans;
+    }
+}
