@@ -1,0 +1,35 @@
+Problem Name: Number of Pairs of Interchangeable Rectangles
+
+Solution Code:
+
+class Solution {
+    public long interchangeableRectangles(int[][] rectangles) {
+        
+        int n = rectangles.length;
+
+        long ans = 0;
+
+        HashMap<List<Integer>, Integer> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            int gcd = findGCD(rectangles[i][0], rectangles[i][1]);
+            int val1 = rectangles[i][0]/gcd;
+            int val2 = rectangles[i][1]/gcd;
+
+            ans += map.getOrDefault(Arrays.asList(val1, val2), 0);
+
+            map.put(Arrays.asList(val1, val2), map.getOrDefault(Arrays.asList(val1, val2), 0) + 1);
+        }
+
+        return ans;
+    }
+
+    public static int findGCD(int a, int b) {
+        while (b != 0) {
+            int temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+}
