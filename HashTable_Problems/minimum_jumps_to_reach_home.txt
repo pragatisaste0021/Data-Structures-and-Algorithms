@@ -1,0 +1,59 @@
+Problem Name: Minimum Jumps to Reach Home
+
+Solution Code:
+
+class Solution {
+    public int minimumJumps(int[] forbidden, int a, int b, int x) {
+        
+        int n = forbidden.length;
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int i=0; i<n; i++){
+            set.add(forbidden[i]);
+        }
+
+        int ub = 2000 + (2 * b);
+
+        Queue<Pair> queue = new LinkedList<>();
+
+        boolean[][] visited = new boolean[ub+1][2];
+
+        visited[0][0] = true;
+
+        queue.add(new Pair(0, 0, 0));
+
+        while(!queue.isEmpty()){
+
+            Pair pair = queue.poll();
+
+            if(pair.vtx == x){
+                return pair.cost;
+            }
+
+            if(pair.lastMove == 0 && pair.vtx - b >= 0 && !set.contains(pair.vtx - b) && !visited[pair.vtx - b][1]){
+                queue.add(new Pair(pair.vtx - b, pair.cost + 1, 1));
+                visited[pair.vtx - b][1] = true;
+            }
+
+            if(!set.contains(pair.vtx + a) && pair.vtx + a <= ub && !visited[pair.vtx + a][0]){
+                queue.add(new Pair(pair.vtx + a, pair.cost + 1, 0));
+                visited[pair.vtx + a][0] = true;
+            }
+        }
+        return -1;
+    }
+}
+
+class Pair{
+
+    int vtx;
+    int cost;
+    int lastMove = 0;
+
+    public Pair(int vtx, int cost, int lastMove){
+        this.vtx = vtx;
+        this.cost = cost;
+        this.lastMove = lastMove;
+    }
+}
