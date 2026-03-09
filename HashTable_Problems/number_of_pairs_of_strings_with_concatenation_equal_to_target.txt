@@ -1,0 +1,46 @@
+Problem Name: Number of Pairs of Strings With Concatenation Equal to Target
+
+Solution Code:
+
+class Solution {
+    public int numOfPairs(String[] nums, String target) {
+        int count = 0;
+        int n = nums.length;
+
+        HashMap<String, Integer> map = new HashMap<>();
+        
+        for(int i=0; i<n; i++){
+        map.put(nums[i], map.getOrDefault(nums[i], 0) + 1);
+        }
+        
+        for(int i=0; i<n; i++){
+        String curr_str = nums[i];
+        int j = 0, k = 0;
+        int len1 = curr_str.length();
+        int len2 = target.length();
+
+        while(j<len1 && k<len2){
+            if(curr_str.charAt(j) == target.charAt(k)){
+            j++;k++;
+            }
+            else{
+            k++;
+            }
+        }
+        if(k == len2){
+            continue;
+        }
+        String t = target.substring(k, len2);
+        if(!(curr_str.substring(0, len1) + t).equals(target)){
+        continue;
+        }
+        if(curr_str.equals(t)){
+            count += map.getOrDefault(t, 0)-1;
+        }
+        else{
+            count += map.getOrDefault(t, 0);
+        }
+        }
+        return count;
+    }
+}
