@@ -1,0 +1,59 @@
+Problem Name: Find Original Array From Doubled Array
+
+Solution Code:
+
+class Solution {
+    public int[] findOriginalArray(int[] changed) {
+        
+        int n = changed.length;
+
+        if(n % 2 != 0){
+            return new int[]{};
+        }
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for(int i=0; i<n; i++){
+            map.put(changed[i], map.getOrDefault(changed[i], 0) + 1); 
+        }
+
+        int count = 0;
+
+        int[] ans = new int[n/2];
+
+        int j=0;
+
+        Arrays.sort(changed);
+
+        if(map.getOrDefault(0, 0) > 0 && (map.getOrDefault(0, 0)) % 2 == 0){
+            int cnt = (map.getOrDefault(0, 0))/2;
+            while(cnt != 0){
+                ans[j++] = 0;
+                cnt--;
+                count++;
+            }
+        }
+        else if(map.getOrDefault(0, 0) > 0 && (map.getOrDefault(0, 0)) % 2 != 0){
+            return new int[] {};
+        }
+
+        for(int i=0; i<n; i++){
+            if(changed[i] == 0){
+                continue;
+            }
+            if(map.getOrDefault(changed[i], 0) > 0 && map.getOrDefault(2*changed[i], 0) >= 1){
+                ans[j++] = changed[i];
+                map.put(2*changed[i], map.getOrDefault(2*changed[i], 0) - 1);
+                map.put(changed[i], map.getOrDefault(changed[i], 0) - 1);
+                count++;
+            }
+            if(count == n/2){
+                break;
+            }
+        }
+        if(count != n/2){
+            return new int[] {};
+        }
+        return ans;
+    }
+}
