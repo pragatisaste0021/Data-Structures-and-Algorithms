@@ -1,0 +1,34 @@
+Problem Name: Describe the Painting
+
+Solution Code:
+
+class Solution {
+    public List<List<Long>> splitPainting(int[][] segments) {
+        
+        int n = segments.length;
+
+        TreeMap<Integer, Long> map = new TreeMap<>();
+
+        for(int[] segment : segments){
+            map.put(segment[0], map.getOrDefault(segment[0], 0L) + segment[2]);
+            map.put(segment[1], map.getOrDefault(segment[1], 0L) - segment[2]);
+        }
+
+        List<List<Long>> ans = new ArrayList<>();
+
+        long sum = 0;
+        long prev = 0;
+
+        for(Map.Entry<Integer, Long> entry : map.entrySet()){
+
+            if(sum != 0){
+                ans.add(new ArrayList<>(Arrays.asList(prev, (long)entry.getKey(), sum)));
+            }
+
+            sum += entry.getValue();
+
+            prev = entry.getKey();
+        }
+        return ans;     
+    }
+}
