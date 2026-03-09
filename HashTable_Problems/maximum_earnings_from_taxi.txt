@@ -1,0 +1,37 @@
+Problem Name: Maximum Earnings From Taxi
+
+Solution Code:
+
+class Solution {
+    public long maxTaxiEarnings(int n, int[][] rides) {
+        
+        Map<Integer,List<int[]>> map = new HashMap<>();
+
+        for(int[] r : rides) {
+            List<int[]> values = map.get(r[1]);
+
+            if(values == null) {
+                values = new ArrayList<>();
+                map.put(r[1],values);
+            }
+
+            values.add(r);
+        }
+
+        long[] dp = new long[n + 1];
+
+        for(int i=2;i<=n;i++) {
+            List<int[]> values = map.get(i);
+
+            if(values != null) {
+                long earning = 0;
+                for(int[] v : values) earning = Math.max(earning,v[1] - v[0] + v[2] + dp[v[0]]);
+                dp[i] = earning;
+            }
+
+            dp[i] = Math.max(dp[i],dp[i-1]);
+        }
+
+        return dp[n];
+    }
+}
