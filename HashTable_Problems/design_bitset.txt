@@ -1,0 +1,62 @@
+Problem Name: Design Bitset
+
+Solution Code:
+
+class Bitset {
+
+    private boolean[] bits;
+    private boolean[] flipped;
+    private int sz, cnt;
+
+    int setCount = 0;
+
+    public Bitset(int size) {
+        sz = size;
+        bits = new boolean[size];
+        flipped = new boolean[size];
+        Arrays.fill(flipped, true);
+    }
+    
+    public void fix(int idx) {
+        if (!bits[idx]) {
+            bits[idx] ^= true;
+            flipped[idx] ^= true;
+            cnt += 1;
+        }
+    }
+    
+    public void unfix(int idx) {
+        if (bits[idx]) {
+            bits[idx] ^= true;
+            flipped[idx] ^= true;
+            cnt -= 1;
+        }
+    }
+    
+    public void flip() {
+        boolean[] tmp = bits;
+        bits = flipped;
+        flipped = tmp;
+        cnt = sz - cnt;
+    }
+    
+    public boolean all() {
+        return cnt == sz;
+    }
+    
+    public boolean one() {
+        return cnt > 0;
+    }
+    
+    public int count() {
+        return cnt;
+    }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        for (boolean b : bits) {
+            sb.append(b ? '1' : '0');
+        }
+        return sb.toString();
+    }
+}
