@@ -1,0 +1,51 @@
+Problem Name: Construct String With Repeat Limit
+
+Solution Code:
+
+class Solution {
+    public String repeatLimitedString(String s, int repeatLimit) {
+        
+        int[] freqChar = new int[26];
+
+        for(int i=0; i<s.length(); i++){
+            freqChar[s.charAt(i) - 'a']++;
+        }
+
+        int j = freqChar.length-1, i= j-1;
+
+        StringBuilder str = new StringBuilder();
+
+        int limit = repeatLimit;
+
+        while(i >= 0 && j >= 0){
+
+            limit = repeatLimit;
+
+            while(limit != 0 && freqChar[j] != 0){
+                str.append((char)(j + 'a'));
+                limit--;
+                freqChar[j]--;
+            }
+            if(freqChar[j] != 0){
+                i = j-1;
+                while(i >= 0 && freqChar[j] != 0){
+                    if(freqChar[i] != 0){
+                        str.append((char) (i + 'a'));
+                        limit = 0;
+                        while(limit < repeatLimit && freqChar[j] != 0){
+                            str.append((char) (j + 'a'));
+                            freqChar[j]--;
+                            limit++;
+                        }
+                        freqChar[i]--;
+                    }
+                    else{
+                        i--;
+                    }
+                }
+            }
+            j--;
+        }
+        return str.toString();
+    }
+}
